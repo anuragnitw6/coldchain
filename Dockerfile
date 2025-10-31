@@ -1,16 +1,23 @@
 FROM openjdk:17-jdk-slim
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
+# Install Maven, Node.js, Yarn, and build tools
+RUN apt-get update && apt-get install -y curl gnupg2 git maven build-essential && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g yarn && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /thingsboard
 
-# Copy all files
+# Copy all project files
 COPY . .
 
-# Build the project
+# Build ThingsBoard (skip tests + license check)
 RUN mvn clean install -DskipTests -Dlicense.skip=true
 
-# Run the ThingsBoard JAR
+# Expose HTTP port
+EXPOSE 8080
+
+# Run ThingsBoard
 CMD ["java", "-jar", "application/target/thingsboard.jar"]
