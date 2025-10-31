@@ -10,7 +10,7 @@ WORKDIR /thingsboard
 COPY . .
 
 # Build the project
-RUN mvn clean install -DskipTests
+RUN mvn clean install -DskipTests -Dlicense.skip=true
 
 # Run the ThingsBoard JAR
 CMD ["java", "-jar", "application/target/thingsboard.jar"]
