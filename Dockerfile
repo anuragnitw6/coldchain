@@ -1,4 +1,5 @@
-FROM openjdk:17-jdk-slim
+#FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk
 
 # Install Maven, Node.js, Yarn, and build tools
 RUN apt-get update && apt-get install -y curl gnupg2 git maven build-essential && \
